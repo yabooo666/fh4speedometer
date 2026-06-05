@@ -4,7 +4,7 @@
 
 local isHide = false
 
-local carRPM, carSpeed, carGear, carIL, carAcceleration, carHandbrake, carBrakeABS, carLS_r, carLS_o, carLS_h, carFuel, carIndicators, carEngineHp, carLights
+local carRPM, carSpeed, carGear, carIL, carAcceleration, carHandbrake, carLS_r, carLS_o, carLS_h, carFuel, carIndicators, carEngineHp, carLights, carMileage
 
 RegisterCommand("fh4speed", function(_, args)	
 	ToggleDisplay()
@@ -28,12 +28,12 @@ Citizen.CreateThread(function()
 				local NcarGear                     = GetVehicleCurrentGear(playerCar)
 				local NcarIL                       = GetVehicleIndicatorLights(playerCar)
 				local NcarAcceleration             = IsControlPressed(0, 71)
-				local NcarHandbrake                = GetVehicleHandbrake(playerCar)
-				local NcarBrakeABS                 = (GetVehicleWheelSpeed(playerCar, 0) <= 0.0) and (NcarSpeed > 0.0)
+				local NcarHandbrake                = GetVehicleHandbrake(playerCar) or IsControlPressed(0, 72) or IsControlPressed(0, 76)
 				local NcarLS_r, NcarLS_o, NcarLS_h = GetVehicleLightsState(playerCar)
 				local veh 						   = GetVehiclePedIsUsing(playerPed)-- need for fuel
 				local fuel 						   = GetVehicleFuelLevel(veh) --fuel start
 				local engineHp                     = GetVehicleEngineHealth(veh) --engine hp
+				local mileage                      = Entity(veh).state.mileage or 0.0 -- mileage (odometer)
 				local _, lightsOne, lightsTwo = GetVehicleLightsState(veh)
 				local lightsState
 
@@ -59,7 +59,7 @@ Citizen.CreateThread(function()
 				local shouldUpdate = false
 				
 				if NcarRPM ~= carRPM or NcarSpeed ~= carSpeed or NcarGear ~= carGear or NcarIL ~= carIL or NcarAcceleration ~= carAcceleration 
-					or NcarHandbrake ~= carHandbrake or NcarBrakeABS ~= carBrakeABS or NcarLS_r ~= carLS_r or NcarLS_o ~= carLS_o or NcarLS_h ~= carLS_h or fuel ~= carFuel or indicatorsState ~= carIndicators 
+					or NcarHandbrake ~= carHandbrake or NcarLS_r ~= carLS_r or NcarLS_o ~= carLS_o or NcarLS_h ~= carLS_h or fuel ~= carFuel or indicatorsState ~= carIndicators 
 					or engineHp ~= carEngineHp or  lightsState ~= carLights then
 					shouldUpdate = true
 				end
@@ -71,7 +71,6 @@ Citizen.CreateThread(function()
 					carIL           = NcarIL
 					carAcceleration = NcarAcceleration
 					carHandbrake    = NcarHandbrake
-					carBrakeABS     = NcarBrakeABS
 					carLS_r         = NcarLS_r
 					carLS_o         = NcarLS_o
 					carLS_h         = NcarLS_h
@@ -79,6 +78,7 @@ Citizen.CreateThread(function()
 					carIndicators   = indicatorsState --indicators lights
 					carEngineHp     = engineHp --engine hp
 					carLights       = lightsState --lights state
+					carMileage      = mileage
 
 					SendNUIMessage({
 						ShowHud                = true,
@@ -90,7 +90,7 @@ Citizen.CreateThread(function()
 						CurrentCarIL           = carIL,
 						CurrentCarAcceleration = carAcceleration,
 						CurrentCarHandbrake    = carHandbrake,
-						CurrentCarABS          = GetVehicleWheelBrakePressure(playerCar, 0) > 0 and not carBrakeABS,
+						CurrentCarMileage      = carMileage,
 						CurrentCarLS_r         = carLS_r,
 						CurrentCarLS_o         = carLS_o,
 						CurrentCarLS_h         = carLS_h,

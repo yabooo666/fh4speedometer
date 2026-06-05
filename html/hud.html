@@ -1,7 +1,14 @@
 <html>
     <head>
         <link href="css/hud.css" rel="stylesheet" type="text/css" />
-        <script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+        <script>
+            if (!window.invokeNative) {
+                document.write('<script src="https://code.jquery.com/jquery-3.6.0.min.js"><\/script>');
+                document.write('<script src="js/demo.js"><\/script>');
+            } else {
+                document.write('<script src="nui://game/ui/jquery.js" type="text/javascript"><\/script>');
+            }
+        </script>
 		<script src="js/gauge.min.official.js"></script>
         <script src="js/hud.js" type="text/javascript"></script>
 		<!-- for fuel -->
@@ -115,13 +122,16 @@
 			<div class="geardisplay"><span>1</span></div>
 			<div class="speeddisplay"><span class="gray">0</span><span class="gray">0</span><span class="gray">0</span></div>
 			<div class="unitdisplay">KMH</div>
-			<div class="abs"><span class="gray">ABS</span></div>
-			<div class="handbrake"><span class="gray">HBK</span></div>
+			<div class="mileagedisplay">000000 <span>km</span></div>
+			<div class="handbrake mxPack">
+				<img class="handbrake-icon" src="images/handbrake.png" />
+			</div>
 
 			<!-- fuel start -->
 			<div class="pump mxPack">
 				<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M 8 5 C 6.355469 5 5 6.355469 5 8 L 5 27 L 19 27 L 19 20 L 21 20 L 21 24 C 21 25.644531 22.355469 27 24 27 C 25.644531 27 27 25.644531 27 24 L 27 13.8125 C 27 13.015625 26.6875 12.28125 26.125 11.71875 L 21.40625 7 L 20 8.40625 L 22.84375 11.25 C 21.769531 11.707031 21 12.765625 21 14 C 21 15.644531 22.355469 17 24 17 C 24.351563 17 24.683594 16.925781 25 16.8125 L 25 24 C 25 24.566406 24.566406 25 24 25 C 23.433594 25 23 24.566406 23 24 L 23 20 C 23 18.90625 22.09375 18 21 18 L 19 18 L 19 8 C 19 6.355469 17.644531 5 16 5 Z M 8 7 L 16 7 C 16.566406 7 17 7.433594 17 8 L 17 12 L 7 12 L 7 8 C 7 7.433594 7.433594 7 8 7 Z M 24 13 C 24.5625 13 25 13.4375 25 14 C 25 14.5625 24.5625 15 24 15 C 23.4375 15 23 14.5625 23 14 C 23 13.4375 23.4375 13 24 13 Z M 7 14 L 17 14 L 17 25 L 7 25 Z"/></svg>
 			</div>
+			<div class="fueldisplay"><span>100%</span></div>
 
 			<!-- indicators -->
 
@@ -156,15 +166,31 @@
 			}
 		}
 	}
-	document.fonts && document.fonts.forEach(function(font) {
-		font.loaded.then(function() {
-			if (font.family.match(/Oswald-Regular/)) {
-				document.gauges.forEach(function(gauge) {
-					gauge.update();
-					gauge.options.renderTo.style.visibility = 'visible';
-				});
-			}
+	function showGauges() {
+		if (window.gaugesShown) return;
+		window.gaugesShown = true;
+		if (document.gauges) {
+			document.gauges.forEach(function(gauge) {
+				gauge.update();
+				gauge.options.renderTo.style.visibility = 'visible';
+			});
+		}
+	}
+
+	if (document.fonts) {
+		document.fonts.forEach(function(font) {
+			font.loaded.then(function() {
+				if (font.family.match(/Oswald-Regular/)) {
+					showGauges();
+				}
+			}).catch(function(err) {
+				console.warn("Font loading blocked/failed. Using fallback font.", err);
+				showGauges();
+			});
 		});
-	});
+	}
+
+	// Safety fallback: show gauges after 500ms even if font promise hangs/fails
+	setTimeout(showGauges, 500);
 	</script>
 </html>
