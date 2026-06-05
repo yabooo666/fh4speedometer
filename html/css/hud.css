@@ -40,8 +40,8 @@
 
 #rpmshow, #rpmbg {
 	position: fixed;
-	bottom: 64px;
-	right: 64px;
+	bottom: 34px;
+	right: 24px;
 	filter: drop-shadow(0px 0px 4px rgba(0,0,0,0.1));
 }
 #rpmbg {
@@ -51,8 +51,8 @@
 	width: 80px;
 	height: 80px;
 	position: fixed;
-	bottom: 185px;
-	right: 185px;
+	bottom: 155px;
+	right: 145px;
 	filter: drop-shadow(0px 0px 4px rgba(0,0,0,0.1));
 }
 .geardisplay {
@@ -62,8 +62,8 @@
 	width: 57px;
 	height: 57px;
 	position: fixed;
-	bottom: 193px;
-	right: 193px;
+	bottom: 163px;
+	right: 153px;
 	color: rgb(63,249,165);
 	border: 3px solid rgb(63,249,165);
 	border-radius: 50%;
@@ -78,8 +78,8 @@
 .speeddisplay {
 	font-size: 117px;
 	position: fixed;
-	bottom: 50px;
-	right: 80px;
+	bottom: 20px;
+	right: 40px;
 	font-family: 'Oswald-Light';
 	font-style: italic;
 	font-weight: 100;
@@ -93,23 +93,23 @@
 }
 .int1 {
 	position: fixed;
-	bottom: 50px;
-	right: 200px;
+	bottom: 20px;
+	right: 160px;
 }
 .int2 {
 	position: fixed;
-	bottom: 50px;
-	right: 140px;
+	bottom: 20px;
+	right: 100px;
 }
 .int3 {
 	position: fixed;
-	bottom: 50px;
-	right: 80px;
+	bottom: 20px;
+	right: 40px;
 }
 .unitdisplay {
 	position: fixed;
-	bottom: 198px;
-	right: 75px;
+	bottom: 168px;
+	right: 35px;
 	color: rgba(255,255,255,0.6);
 	font-family: 'Oswald-Regular';
 	font-style: italic;
@@ -120,8 +120,8 @@
 	width: 46px;
     height: 46px;
 	position: absolute;
-    bottom: 198px;
-    right: 282px;
+    bottom: 168px;
+    right: 242px;
 	margin-right: auto;
     margin-left: auto;
 }
@@ -133,31 +133,61 @@
 	transition: all 0.2s ease-in-out;
 }
 
-.pump svg {
-	width: 40px;
-    height: 40px;
-	position: absolute;
-    bottom: 150px;
-    right: 265px;
-	/* display: flex; */
-	margin-right: auto;
-    margin-left: auto;
-    fill: #8eda50;
-    filter: drop-shadow(3px 5px 2px #8eda509a);
+.fuel-container {
+	position: fixed;
+	bottom: 14px;
+	right: 4px;
+	width: 360px;
+	height: 360px;
+	pointer-events: none;
+	overflow: visible;
 }
 
-.fueldisplay {
-	width: 40px;
+.fuel-arc-svg {
 	position: absolute;
-    bottom: 125px;
-    right: 265px;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+}
+
+.fuel-track {
+	stroke-dasharray: 270 1081;
+	transform: rotate(121deg);
+	transform-origin: 180px 180px;
+}
+
+.fuel-fill {
+	stroke-dasharray: 270 1081;
+	stroke-dashoffset: 0;
+	transform: rotate(121deg);
+	transform-origin: 180px 180px;
+	transition: stroke-dashoffset 0.3s ease, stroke 0.3s ease, filter 0.3s ease;
+}
+
+.fuel-icon {
+	width: 28px;
+	height: 28px;
+	position: absolute;
+	bottom: 12px;
+	left: 95px;
+	transition: fill 0.3s ease, filter 0.3s ease;
+}
+
+.fuel-text {
+	position: absolute;
+	bottom: -8px;
+	left: 59px;
+	width: 100px;
 	text-align: center;
 	font-family: 'Oswald-Regular';
-	font-size: 14px;
+	font-size: 13px;
 	color: #8eda50;
-	font-style: italic;
 	font-weight: bold;
+	font-style: italic;
 	text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+	transition: color 0.3s ease;
 }
 
 
@@ -165,8 +195,8 @@
 	width: 35px;
     height: 35px;
 	position: absolute;
-    bottom: 240px;
-    right: 130px;
+    bottom: 210px;
+    right: 90px;
 	margin-right: auto;
     margin-left: auto;
     fill : rgb(170, 185, 104);
@@ -177,8 +207,8 @@
 	width: 35px;
     height: 35px;
 	position: absolute;
-    bottom: 260px;
-    right: 270px;
+    bottom: 120px;
+    right: 225px;
 	margin-right: auto;
     margin-left: auto;
     fill: #0fa4e9;
@@ -189,8 +219,8 @@
 	width: 40px;
     height: 40px;
 	position: absolute;
-    bottom: 285px;
-    right: 205px;
+    bottom: 220px;
+    right: 230px;
 	margin-right: auto;
     margin-left: auto;
     /* fill: #413f3faf; */
@@ -204,8 +234,8 @@
 	width: 40px;
     height: 40px;
 	position: absolute;
-    bottom: 285px;
-    right: 205px;
+    bottom: 220px;
+    right: 230px;
 	margin-right: auto;
     margin-left: auto;
     fill: rgb(63,249,165);
@@ -221,8 +251,10 @@
 
 .mileagedisplay {
 	position: fixed;
-	bottom: 25px;
-	right: 80px;
+	bottom: 255px;
+	right: 134px;
+	width: 100px;
+	text-align: center;
 	color: rgba(255, 255, 255, 0.7);
 	font-family: 'Oswald-Regular';
 	font-size: 16px;
