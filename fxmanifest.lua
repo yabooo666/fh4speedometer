@@ -9,7 +9,7 @@ ui_page "html/hud.html"
 
 files {
 	"html/hud.html",
-	"html/js/gauge.min.js",
+	"html/js/gauge.min.official.js",
 	"html/js/hud.js",
 	"html/css/hud.css",
 	"html/fonts/Oswald-Light.eot",
